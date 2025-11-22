@@ -1,3 +1,4 @@
+import { VO_CONFIG } from "./config";
 // Storage Layer - Works on all devices (Web, Android, iOS)
 // Priority: IndexedDB (primary) -> LocalStorage (fallback) -> Firebase (optional sync)
 
@@ -8,9 +9,6 @@ import { getFirestore, Firestore, doc, setDoc, Timestamp } from 'firebase/firest
 const firebaseConfig = {
     // Users can configure this if they want cloud sync
     // If not configured, app works 100% offline
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
-    appId: import.meta.env.VITE_FIREBASE_APP_ID || ''
 };
 
 let firebaseApp: FirebaseApp | null = null;

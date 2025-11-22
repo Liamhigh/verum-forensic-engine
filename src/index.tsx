@@ -1,4 +1,5 @@
-const GEMINI_API_KEY = import.meta.env.VITE_API_KEY || "dummy_key_offline_mode";
+import { VO_CONFIG } from "./config";
+const GEMINI_API_KEY = VO_CONFIG.GEMINI_API_KEY;
 /// <reference types="vite/client" />
 import React, { useState, useEffect, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
