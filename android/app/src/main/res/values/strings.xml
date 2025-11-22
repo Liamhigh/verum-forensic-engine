@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Verum Omnis - Forensic Engine</string>
+    <string name="title_activity_main">Verum Omnis - Forensic Engine</string>
+    <string name="package_name">com.verumomnis.engine</string>
+    <string name="custom_url_scheme">com.verumomnis.engine</string>
+</resources>

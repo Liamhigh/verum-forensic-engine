@@ -1,0 +1,10 @@
+
+{
+  "appId": "com.verumomnis.engine",
+  "appName": "Verum Omnis - Forensic Engine",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

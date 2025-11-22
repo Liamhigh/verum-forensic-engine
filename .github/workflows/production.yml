@@ -1,0 +1,82 @@
+name: Production Build & Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy_web:
+    name: Build Web & Deploy Firebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Create production env file
+        run: echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" > .env.production
+
+      - name: Build Web Project
+        run: npm run build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_VERUM_OMNIS_ENGINE }}'
+          channelId: live
+          projectId: verum-omnis-engine
+
+  build_android_apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    needs: build_and_deploy_web
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Create production env file
+        run: echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" > .env.production
+
+      - name: Build Web Assets
+        run: npm run build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+
+      - name: Copy web assets to Android
+        run: |
+          mkdir -p android/app/src/main/assets/public
+          cp -r dist/* android/app/src/main/assets/public/
+
+      - name: Build Android APK (Release)
+        run: cd android && ./gradlew assembleRelease
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: verum-omnis-release
+          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
