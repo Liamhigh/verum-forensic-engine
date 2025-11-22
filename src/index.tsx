@@ -1,3 +1,4 @@
+const GEMINI_API_KEY = import.meta.env.VITE_API_KEY || "dummy_key_offline_mode";
 /// <reference types="vite/client" />
 import React, { useState, useEffect, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -8,7 +9,6 @@ import { storage } from './storage';
 
 // --- Gemini API Key Constant ---
 // Read from Vite env so it works for web + APK builds
-const GEMINI_API_KEY = import.meta.env.VITE_API_KEY || '';
 
 // --- V5 Rules Definition (Full Gift Rules) ---
 const V5_RULES = {
